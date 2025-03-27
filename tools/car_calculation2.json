@@ -1,0 +1,18 @@
+
+{
+    "name":"car_complex_calculation",
+    "description":"calculates the whole price of a car based on several parts (one or more)",
+    "input_schema": {
+        "type":"object",
+        "properties":{
+            "parts":{
+                "type": "array",
+                "items":{
+                    "type": "string",
+                    "description":"List of parts"
+                }
+            }
+        },
+        "required":["parts"]
+    }
+}
