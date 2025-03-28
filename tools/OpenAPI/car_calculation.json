@@ -1,0 +1,22 @@
+{
+    "type":"function",
+    "name":"car_calculation",
+    "description":"calculates the whole price of a car based on two parts",
+    "parameters": {
+        "type":"object",
+        "properties":{
+            "part1": {
+                "type":"string",
+                "description":"First Part of the car for calculation"
+            },
+            "part2":{
+                "type":"string",
+                "description":"Second Part of the car for calculation"
+            }
+        },
+        "required":["part1", "part2"],
+        "additionalProperties":false
+    }
+}
+
+
