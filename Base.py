@@ -83,6 +83,7 @@ class AI:
 class OAI:
     """ Class to communicate to chat via OpenAI
     """
+    
     __model__: str
     __max_tokens__: int = 0
     __tools__ : list = None
@@ -151,11 +152,11 @@ class OAI:
         self.__tools__ = tools
         return tools
     
-    def tool_calls(self, response : openai.types.responses.response.Response ) -> list:
-        message : list = [] 
-        
+    def tool_calls(self, output : list ) -> list:
+        message : list[dict] = []
+
         #call tools
-        for tool_call in response.output:
+        for tool_call in output:
             if tool_call.type != "function_call":
                 continue
 
@@ -172,4 +173,5 @@ class OAI:
                 "call_id": tool_call.call_id,
                 "output": str(result)
             })
+        
         return message

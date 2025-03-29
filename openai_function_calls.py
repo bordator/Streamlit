@@ -36,7 +36,8 @@ def main():
     message = [
         {
             "role": "user",
-            "content": "Please calculate the price for a car which includes the following extras: special wheel and a super battery. ",
+#            "content": "Please calculate the price for a car which includes the following extras: special wheel,  a super battery and a charger cable. ",
+            "content": "What can i do today?",
         }
     ]
 
@@ -48,38 +49,39 @@ def main():
     print("------------1st Content-----------------")
         
     #call tools
-    for tool_call in response.output:
-        if tool_call.type != "function_call":
-            continue
+    # for tool_call in response.output:
+    #     if tool_call.type != "function_call":
+    #         continue
 
-        tool_name = tool_call.name
-        args = json.loads(tool_call.arguments)
-        if tool_name == "car_calculation":
-            result = Tools.car_calculator(**args)
-        elif tool_name == 'car_complex_calculation':
-            result = Tools.car_complex_calculator(**args)
+    #     tool_name = tool_call.name
+    #     args = json.loads(tool_call.arguments)
+    #     if tool_name == "car_calculation":
+    #         result = Tools.car_calculator(**args)
+    #     elif tool_name == 'car_complex_calculation':
+    #         result = Tools.car_complex_calculator(**args)
         
-        message.append(tool_call)    
-        message.append({
-            "type": "function_call_output",
-            "call_id": tool_call.call_id,
-            "output": str(result)
-        })
-
-
-        # message.append(tool_response)
+    #     message.append(tool_call)    
+    #     message.append({
+    #         "type": "function_call_output",
+    #         "call_id": tool_call.call_id,
+    #         "output": str(result)
+    #     })
+    #Check if we got a response
+    if((response.output is not None)):
+        tool_response = ai.tool_calls(output=response.output)
+        ##Test if there are tool calls needed
+        message.extend([*tool_response])
         print("------------tool Response-----------------")
+        #check if there was a tool call
+        if(len(tool_response) > 0):
+            ##Tool call
+            print(message)
+            response = ai.call(message=message, tools=tools)
+            print("------------2st Response-----------------")
 
-        print(message)
-        response = ai.call(message=message, tools=tools)
-        print("------------2st Response-----------------")
-
-        print(response)
         print(response.output_text)
-    if(response.output is not None):
-        print("Kein Tool aufruf")
     else:
-        print("AI Response:", response.output_text)
+        print("No Response output !!!!:", response.output_text)
 
 
 if __name__ == "__main__":

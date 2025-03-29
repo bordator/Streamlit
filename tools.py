@@ -15,19 +15,24 @@ class Tools:
         
         try:
             sum += parts[part2]
-        except:
+        except Exception as e:
+            if e.__context__ is not None:
+                print("Exception during:", e.__context__)
             raise ValueError('Part not defined')
+
         
         return sum
+    
     @staticmethod    
     def car_complex_calculator(parts:list[str]) -> int:
-        part_database  = { "special wheel" : 1000, "super battery":2000 }
+        part_database  = { "special wheel" : 1000, "super battery":2000, "charger cable":15 }
         
         sum : int = 0
         for part in parts:
             try:
                 sum += part_database[part]
-            except:
+            except Exception as e:
+                if e.__context__ is not None:
+                    print("Exception during:", e.__context__)
                 raise ValueError('Part not defined')
-        
         return sum
